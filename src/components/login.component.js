@@ -83,7 +83,7 @@ export default class Login extends Component {
             .then(response => {
 
                 localStorage.setItem('token', response.data.accessToken);
-                window.location.href = "/userDetails";
+                window.location.href = "/accountDetails";
 
             })
             .catch(error => {

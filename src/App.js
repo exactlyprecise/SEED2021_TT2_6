@@ -6,6 +6,7 @@ import Login from "./components/login.component";
 import UserDetails from "./components/userDetails.component";
 import AccountDetails from "./components/accountDetails.component";
 import AddTransaction from "./components/addTransaction.component";
+import UpdateAccBal from "./components/updateAccBal.component";
 import { NavDropdown } from 'react-bootstrap';
 
 export default class App extends Component {
@@ -25,7 +26,7 @@ export default class App extends Component {
                 <a className="navbar-brand" href="/sign-in">TechTrek Challenge</a>
                 <ul className="navbar-nav ml-auto">
                   <NavDropdown title="Actions" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="/userDetails">Update Account Balance</NavDropdown.Item>
+                    <NavDropdown.Item href="/updateAccBal">Update Account Balance</NavDropdown.Item>
                     <NavDropdown.Item href="/accountDetails">Add Transaction</NavDropdown.Item>
                   </NavDropdown>
                   <NavDropdown title="Details" id="basic-nav-dropdown">
@@ -46,11 +47,11 @@ export default class App extends Component {
                   <a className="navbar-brand" href="/sign-in">TeckTrek Challenge</a>
                   <ul className="navbar-nav ml-auto">
                     <NavDropdown title="Actions" id="basic-nav-dropdown">
-                      <NavDropdown.Item href="/userDetails">Update Account Balance</NavDropdown.Item>
+                      <NavDropdown.Item href="/updateAccBal">Update Account Balance</NavDropdown.Item>
                       <NavDropdown.Item href="/accountDetails">Add Transaction</NavDropdown.Item>
                     </NavDropdown>
                     <NavDropdown title="View Details" id="basic-nav-dropdown">
-                      <NavDropdown.Item href="/userDetails">User Details</NavDropdown.Item>
+                      <NavDropdown.Item href="/">User Details</NavDropdown.Item>
                       <NavDropdown.Item href="/accountDetails">Account Details</NavDropdown.Item>
                       <NavDropdown.Item href="/transactionDetails">Transaction Details</NavDropdown.Item>
                       <NavDropdown.Divider />
@@ -69,6 +70,7 @@ export default class App extends Component {
               <Route path="/userDetails" component={UserDetails} />
               <Route path="/accountDetails" component={AccountDetails} />
               <Route path="/addTransaction" component={AddTransaction} />
+              <Route path="/updateAccBal" component={UpdateAccBal} />
             </Switch>
           </div>
 

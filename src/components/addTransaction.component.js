@@ -41,7 +41,6 @@ export default class AddTransaction extends Component {
 
     }
 
-
     //submitting of the form 
     onSubmit = (e) => {
         e.preventDefault();

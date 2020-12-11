@@ -28,15 +28,34 @@ export default class UserDetails extends Component {
         this.changeHandler = this.changeHandler.bind(this);
 
         //call the API 
+
+        const config = {
+            headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+        };
+
+        axios
+            .post('http://backend-env.eba-g7hdkdd4.ap-southeast-1.elasticbeanstalk.com/user',
+                config
+            )
+            .then(response => {
+                console.log("response " + response.data);
+                // this.setState({ success: response.data });
+
+            })
+            .catch(error => {
+                console.log(error);
+                console.log(error.message);
+                // this.setState({ failure: error.message });
+            });
         //then after that set the values after getting the response 
-        this.state.firstName = "hello";
-        this.state.lastName = "hello";
-        this.state.nric = "hello";
-        this.state.gender = "hello";
-        this.state.age = 22;
-        this.state.phoneNumber = "hello";
-        this.state.email = "hello";
-        this.state.address = "hello";
+        // this.state.firstName = "hello";
+        // this.state.lastName = "hello";
+        // this.state.nric = "hello";
+        // this.state.gender = "hello";
+        // this.state.age = 22;
+        // this.state.phoneNumber = "hello";
+        // this.state.email = "hello";
+        // this.state.address = "hello";
 
     }
 
