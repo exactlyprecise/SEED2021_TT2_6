@@ -5,8 +5,10 @@ from datetime import datetime
 import json
 import jwt
 import os
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 auth_status = True
 
