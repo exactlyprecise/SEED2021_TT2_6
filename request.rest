@@ -1,0 +1,63 @@
+###
+
+POST https://u8fpqfk2d4.execute-api.ap-southeast-1.amazonaws.com/techtrek2020/login
+x-api-key: nIQY2CKXiN61xvsVkVx6P4uf4qRlPXO34XeLt1aE
+Content-Type: application/json
+
+{
+    "username": "Group6",
+    "password": "Jpqre7Y27A5_Hen"
+}
+
+###
+
+POST https://u8fpqfk2d4.execute-api.ap-southeast-1.amazonaws.com/techtrek2020/users
+x-api-key: nIQY2CKXiN61xvsVkVx6P4uf4qRlPXO34XeLt1aE
+Content-Type: application/json
+
+###
+
+POST https://u8fpqfk2d4.execute-api.ap-southeast-1.amazonaws.com/techtrek2020/accounts/view
+x-api-key: nIQY2CKXiN61xvsVkVx6P4uf4qRlPXO34XeLt1aE
+Content-Type: application/json
+
+{
+    "custID": 7
+}
+
+###
+
+POST https://u8fpqfk2d4.execute-api.ap-southeast-1.amazonaws.com/techtrek2020/accounts/update
+x-api-key: nIQY2CKXiN61xvsVkVx6P4uf4qRlPXO34XeLt1aE
+Content-Type: application/json
+
+{
+    "custID": 7,
+    "amount": 1234.56
+}
+
+###
+
+POST https://u8fpqfk2d4.execute-api.ap-southeast-1.amazonaws.com/techtrek2020/transaction/view
+x-api-key: nIQY2CKXiN61xvsVkVx6P4uf4qRlPXO34XeLt1aE
+Content-Type: application/json
+
+{
+    "custID": 7
+}
+
+###
+
+POST https://u8fpqfk2d4.execute-api.ap-southeast-1.amazonaws.com/techtrek2020/transaction/add
+x-api-key: nIQY2CKXiN61xvsVkVx6P4uf4qRlPXO34XeLt1aE
+Content-Type: application/json
+
+{
+    "custID": 7,
+    "payeeID": 8,
+    "dateTime": "7 Jan 2020",
+    "amount": 100,
+    "expensesCat": "food",
+    "eGift": true,
+    "message": "Thanks for dinner!"
+}
