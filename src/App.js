@@ -8,12 +8,29 @@ import AccountDetails from "./components/accountDetails.component";
 import AddTransaction from "./components/addTransaction.component";
 import UpdateAccBal from "./components/updateAccBal.component";
 import { NavDropdown } from 'react-bootstrap';
+import axios from 'axios';
 
 export default class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { custID: localStorage.getItem('custID') };
+    this.state = { token: localStorage.getItem('token') };
+  }
+
+  logout() {
+    axios
+      .post('http://localhost:4000/logout', {
+
+      })
+      .then(response => {
+
+      })
+      .catch(error => {
+        this.setState({ error });
+        console.log(error);
+      });
+    localStorage.removeItem('token');
+
   }
   render() {
 
@@ -23,7 +40,7 @@ export default class App extends Component {
           {this.state.token != null ? (
             <nav className="navbar navbar-expand-lg navbar-light fixed-top">
               <div className="container">
-                <a className="navbar-brand" href="/sign-in">TechTrek Challenge</a>
+                <a className="navbar-brand" href="/login">TechTrek Challenge</a>
                 <ul className="navbar-nav ml-auto">
                   <NavDropdown title="Actions" id="basic-nav-dropdown">
                     <NavDropdown.Item href="/updateAccBal">Update Account Balance</NavDropdown.Item>
@@ -36,7 +53,7 @@ export default class App extends Component {
                   </NavDropdown>
 
                   <li className="nav-item">
-                    <a className="nav-link" href="#">Logout</a>
+                    <a className="nav-link" href="/login">Logout</a>
                   </li>
                 </ul>
               </div>
@@ -44,21 +61,8 @@ export default class App extends Component {
           ) : (
               <nav className="navbar navbar-expand-lg navbar-light fixed-top">
                 <div className="container">
-                  <a className="navbar-brand" href="/sign-in">TeckTrek Challenge</a>
-                  <ul className="navbar-nav ml-auto">
-                    <NavDropdown title="Actions" id="basic-nav-dropdown">
-                      <NavDropdown.Item href="/updateAccBal">Update Account Balance</NavDropdown.Item>
-                      <NavDropdown.Item href="/accountDetails">Add Transaction</NavDropdown.Item>
-                    </NavDropdown>
-                    <NavDropdown title="View Details" id="basic-nav-dropdown">
-                      <NavDropdown.Item href="/">User Details</NavDropdown.Item>
-                      <NavDropdown.Item href="/accountDetails">Account Details</NavDropdown.Item>
-                      <NavDropdown.Item href="/transactionDetails">Transaction Details</NavDropdown.Item>
-                      <NavDropdown.Divider />
-                      <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                    </NavDropdown>
+                  <a className="navbar-brand" href="/login">TeckTrek Challenge</a>
 
-                  </ul>
                 </div>
               </nav>
             )}

@@ -5,7 +5,6 @@ const app =  express()
 const cors = require("cors")
 const jwt = require('jsonwebtoken')
 const fetch = require('node-fetch')
-const cors = require("cors")
 require('dotenv').config() // for env vairables
 app.use(express.json())
 app.use(cors());
@@ -88,4 +87,4 @@ app.post('/extend', (req, res)=> {
     })
 })
 
-app.listen(4005)
+app.listen(4000)

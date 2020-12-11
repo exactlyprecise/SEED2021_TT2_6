@@ -5,7 +5,7 @@ import { Row, Col } from 'react-bootstrap';
 import { BrowserRouter as Router } from "react-router-dom";
 
 const INITIAL_STATE = {
-    //fill in the variable name
+    amount: '',
 };
 
 
@@ -23,6 +23,7 @@ export default class UpdateAccBal extends Component {
 
         this.state = {
             ...INITIAL_STATE,
+            amount: '',
         };
     }
 
@@ -38,19 +39,19 @@ export default class UpdateAccBal extends Component {
         e.preventDefault();
 
         // change the below code according to your variable name
-        // const { payeeID } = this.state;
+        const { amount } = this.state;
 
         let formData = new FormData();
 
-       // formData.append("payeeID", payeeID); // change the variable name
-       
+        formData.append("amount", amount); // change the variable name
+
         const config = {
-            headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+            headers: { "accessToken": localStorage.getItem("token") }
         };
 
         // get the link from jiawei!
         axios
-            .post('http://backend-env.eba-g7hdkdd4.ap-southeast-1.elasticbeanstalk.com/transfer',
+            .post('http://backend-env.eba-g7hdkdd4.ap-southeast-1.elasticbeanstalk.com/balance',
                 formData,
                 config
             )
@@ -71,11 +72,12 @@ export default class UpdateAccBal extends Component {
 
         // change the variable name 
         // const { payeeID } = this.state;
+        const { amount } = this.state;
 
 
         // insert the variable name
-        // const isInvalid =
-        //     payeeID === '' ||
+        const isInvalid =
+            amount === ''
         //     amount === '' ||
         //     expensesCat === '' ||
         //     eGift === '' ||
@@ -85,13 +87,22 @@ export default class UpdateAccBal extends Component {
         return (
             <Router>
                 <div>
-                    <div className="validationAuth-Inner">
+                    <div className="auth-inner">
 
                         <form onSubmit={this.onSubmit}>
                             <h3>Update Account Balance</h3>
-                            
-                            
-                            <button type="submit" className="btn btn-primary btn-block">Add Transaction</button>
+
+                            <Row>
+                                <Col>
+                                    <div className="form-group">
+                                        <label>Amount</label>
+                                        <input type="text" name="amount" value={amount} onChange={this.changeHandler} className="form-control" />
+
+                                    </div>
+                                </Col>
+                            </Row>
+
+                            <button type="submit" disabled={isInvalid} className="btn btn-primary btn-block">Add Transaction</button>
                         </form>
                     </div>
                 </div>
