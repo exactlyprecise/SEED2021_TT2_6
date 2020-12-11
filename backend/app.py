@@ -282,5 +282,38 @@ def verify_user_exist():
                     }
                 }, 401
 
+@app.route("/transfer", methods=['POST'])
+@cross_origin()
+def transfer():
+
+    accessToken = request.headers["accessToken"]
+
+    auth_status, custID = authorise(accessToken)
+
+    if auth_status:
+
+        data = request.form
+        amount = data["amount"]
+
+        headers = {'x-api-key': API_KEY}
+        data = {'custID': custID,'amount': amount}
+        json_data = json.dumps(data)
+        response = requests.post("https://u8fpqfk2d4.execute-api.ap-southeast-1.amazonaws.com/techtrek2020/accounts/update", data=json_data, headers=headers)
+        update_result = response.text
+        print(update_result)
+    
+        return {"result": {
+                    "result": update_result,
+                    "balance": curr_balance
+                    }
+                }, 201
+    
+    else:
+        return {"result": {
+                    "result": "auth failed"
+                    }
+                }, 401
+
+
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
