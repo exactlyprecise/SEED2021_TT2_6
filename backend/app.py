@@ -20,6 +20,18 @@ def authorise(token):
     else:
         auth_status = True
 
+# header: {
+#     accessToken: "XXX"    
+# }
+# body: {
+#     "custID": 6,
+#     "payeeID": 22,
+#     "dateTime": "2020-03-23T00:52:57.018Z",
+#     "amount": 100,
+#     "expensesCat": "Entertainment",
+#     "eGift": true,
+#     "message": "Thanks. :)"
+# }
 @app.route("/transfer", methods=['POST'])
 def transfer():
 
@@ -77,6 +89,12 @@ def transfer():
                     }
                 }, 401
 
+# headers: {
+#     accessToken: "XXX"
+# }
+# body: {
+#     "custID": 6
+# }
 @app.route("/balance", methods=['POST'])
 def view_balance():
 
@@ -107,6 +125,12 @@ def view_balance():
                     }
                 }, 401
 
+# headers: {
+#     accessToken: "XXX"
+# }
+# body: {
+#     "custID": 6
+# }
 @app.route("/transaction", methods=['POST'])
 def view_transaction():
 
@@ -135,6 +159,9 @@ def view_transaction():
                     }
                 }, 401
 
+# headers: {
+#     accessToken: "XXX"
+# }
 @app.route("/user", methods=['POST'])
 def view_user():
 
@@ -166,6 +193,12 @@ def view_user():
                     }
                 }, 401
 
+# headers: {
+#     accessToken: "XXX"
+# }
+# body: {
+#     "custID": 6
+# }
 @app.route("/users", methods=['POST'])
 def view_users():
 
