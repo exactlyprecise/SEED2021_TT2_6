@@ -7,6 +7,10 @@
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.5.0",
     "bootstrap": "^4.5.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^2.6.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
@@ -17,7 +21,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "devStartAuth": "nodemon authServer.js"
   },
   "eslintConfig": {
     "extends": [
@@ -36,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
