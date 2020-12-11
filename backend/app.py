@@ -102,8 +102,8 @@ def transfer():
 def view_balance():
 
     accessToken = request.headers["accessToken"]
-    auth_status = False
-    custID = authorise(accessToken)
+
+    auth_status, custID = authorise(accessToken)
 
     if auth_status:
 
@@ -133,8 +133,8 @@ def view_balance():
 def view_transaction():
 
     accessToken = request.headers["accessToken"]
-    auth_status = False
-    custID = authorise(accessToken)
+
+    auth_status, custID = authorise(accessToken)
 
     if auth_status:
 
@@ -162,12 +162,10 @@ def view_transaction():
 def view_user():
 
     accessToken = request.headers["accessToken"]
-    custID = authorise(accessToken)
+
+    auth_status, custID = authorise(accessToken)
 
     if auth_status:
-
-        accessToken = request.headers["accessToken"]
-        authorise(refreshToken)
 
         headers = {'x-api-key': API_KEY}
         data = {'custID': custID}
@@ -193,7 +191,8 @@ def view_user():
 def view_users():
 
     accessToken = request.headers["accessToken"]
-    custID = authorise(accessToken)
+
+    auth_status, custID = authorise(accessToken)
 
     if auth_status:
 
@@ -222,8 +221,8 @@ def view_users():
 def verify_user_exist():
 
     accessToken = request.headers["accessToken"]
-    auth_status = False
-    authorise(accessToken)
+    
+    auth_status, custID = authorise(accessToken)
 
     if auth_status:
 
