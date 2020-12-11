@@ -58,7 +58,7 @@ export default class AddTransaction extends Component {
         formData.append("message", message);
 
         const config = {
-            headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+            headers: { "accessToken": localStorage.getItem("token") }
         };
 
         axios

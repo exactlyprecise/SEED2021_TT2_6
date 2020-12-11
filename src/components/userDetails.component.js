@@ -30,15 +30,17 @@ export default class UserDetails extends Component {
         //call the API 
 
         const config = {
-            headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+            headers: { "accessToken": localStorage.getItem("token") }
         };
+
+        const data = {};
 
         axios
             .post('http://backend-env.eba-g7hdkdd4.ap-southeast-1.elasticbeanstalk.com/user',
-                config
+                data, config
             )
             .then(response => {
-                console.log("response " + response.data);
+                console.log(response.data);
                 // this.setState({ success: response.data });
 
             })
@@ -47,15 +49,7 @@ export default class UserDetails extends Component {
                 console.log(error.message);
                 // this.setState({ failure: error.message });
             });
-        //then after that set the values after getting the response 
-        // this.state.firstName = "hello";
-        // this.state.lastName = "hello";
-        // this.state.nric = "hello";
-        // this.state.gender = "hello";
-        // this.state.age = 22;
-        // this.state.phoneNumber = "hello";
-        // this.state.email = "hello";
-        // this.state.address = "hello";
+
 
     }
 

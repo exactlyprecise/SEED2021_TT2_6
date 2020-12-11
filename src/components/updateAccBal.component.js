@@ -46,7 +46,7 @@ export default class UpdateAccBal extends Component {
         formData.append("amount", amount); // change the variable name
 
         const config = {
-            headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+            headers: { "accessToken": localStorage.getItem("token") }
         };
 
         // get the link from jiawei!
