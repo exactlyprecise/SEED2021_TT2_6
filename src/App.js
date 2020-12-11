@@ -51,7 +51,7 @@ export default class App extends Component {
                       <NavDropdown.Item href="/accountDetails">Add Transaction</NavDropdown.Item>
                     </NavDropdown>
                     <NavDropdown title="View Details" id="basic-nav-dropdown">
-                      <NavDropdown.Item href="/">User Details</NavDropdown.Item>
+                      <NavDropdown.Item href="/userDetails">User Details</NavDropdown.Item>
                       <NavDropdown.Item href="/accountDetails">Account Details</NavDropdown.Item>
                       <NavDropdown.Item href="/transactionDetails">Transaction Details</NavDropdown.Item>
                       <NavDropdown.Divider />
