@@ -282,9 +282,9 @@ def verify_user_exist():
                     }
                 }, 401
 
-@app.route("/transfer", methods=['POST'])
+@app.route("/addbalance", methods=['POST'])
 @cross_origin()
-def transfer():
+def add_balance():
 
     accessToken = request.headers["accessToken"]
 
