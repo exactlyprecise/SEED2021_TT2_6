@@ -4,6 +4,7 @@ const express = require("express")
 const app =  express()
 const jwt = require('jsonwebtoken')
 const fetch = require('node-fetch')
+const cors = require("cors")
 require('dotenv').config() // for env vairables
 app.use(express.json())
 
@@ -18,29 +19,37 @@ app.post('/login', async (req, res) => {
     // ASSUMING REQ BODY has req.username
     const username = req.body.username
     const password = req.body.password
-    const user = {username: username}
 
     let result = await fetchCredentials(username, password, API_KEY)
 
-    const accessToken = generateAccessToken(user)
-    const refreshToken = jwt.sign(user, REFRESH_TOKEN_SECRET)
-    refreshTokens.push(refreshToken)
-    //console.log(result)
+    if (result == "Error") {
+        res.status(403)
+        res.json()
+    } else {
 
-    // Now for the implementation of jsonwebtokens
-        //const user = {name: username} // Payload to sign/ serialize in our jsonwebtoken
-    // jwt needs to sign payload and secret key
-        //const accessToken = generateAccessToken(user)
-    // Can easily create secret value using crypt library in nodejs
-    // > node > require('crypto').randomBytes(64).toString('hex')
-    // also, no expiration date for this yet.
-        //const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+        custID = result["custID"]
+        const user = {username: username, custID: custID}
+        // PAYLOAD
+        const accessToken = generateAccessToken(user)
+        const refreshToken = jwt.sign(user, REFRESH_TOKEN_SECRET)
+        refreshTokens.push(refreshToken)
+        //console.log(result)
 
-        //refreshTokens.push(refreshToken)
+        // Now for the implementation of jsonwebtokens
+            //const user = {name: username} // Payload to sign/ serialize in our jsonwebtoken
+        // jwt needs to sign payload and secret key
+            //const accessToken = generateAccessToken(user)
+        // Can easily create secret value using crypt library in nodejs
+        // > node > require('crypto').randomBytes(64).toString('hex')
+        // also, no expiration date for this yet.
+            //const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
 
-        //res.json({ accessToken: accessToken, refreshToken: refreshToken })
-    
-    res.json({details: result, accessToken: accessToken, refreshToken: refreshToken})
+            //refreshTokens.push(refreshToken)
+
+            //res.json({ accessToken: accessToken, refreshToken: refreshToken })
+        
+        res.json({details: result, accessToken: accessToken, refreshToken: refreshToken})
+    }
 })
 
 async function fetchCredentials(username, password, key) {
@@ -53,8 +62,16 @@ async function fetchCredentials(username, password, key) {
             'x-api-key': key
         },
         })
-        .then((response) => response.json())
+        .then((response) => handleResponse(response))
     return responseJSON
+}
+
+function handleResponse(response) {
+    if (response.status == 403) {
+        return "Error"
+    } else {
+        return response.json()
+    }
 }
 
 function generateAccessToken(user) {
