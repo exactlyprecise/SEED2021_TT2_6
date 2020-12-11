@@ -8,23 +8,30 @@ import os
 
 app = Flask(__name__)
 
+auth_status = True
+
+ACCESS_TOKEN_SECRET = "7c603d0b750ac06d742bca015d59cde7b984b91129e5f28ab7ed13391c0c1fe99c7ff024c1b440c2009dcde80f5c1306cfd87ffdbe1d428dc132fc50e986b561"
 REFRESH_TOKEN_SECRET = "cfc12c648041d410ab4858841e87707ee901a1b2174f57dd410cd6549feb2f8f841c4e23a4a4cd9eac72a3fab38f53cb3e1ef694fb4d890e9433adf08486eaaa"
 
 API_KEY = 'nIQY2CKXiN61xvsVkVx6P4uf4qRlPXO34XeLt1aE'
 
 def authorise(token):
-    try: 
-        payload = jwt.decode(token, REFRESH_TOKEN_SECRET, algorithms=['HS256'])
+
+    try:
+        payload = jwt.decode(token, ACCESS_TOKEN_SECRET, algorithms=['HS256'])
     except Exception as e:
         print(e)
-    else:
-        auth_status = True
+        return False
+
+    print(payload)
+    custID = payload["custID"]
+    return True, custID
+   
 
 # header: {
 #     accessToken: "XXX"    
 # }
 # body: {
-#     "custID": 6,
 #     "payeeID": 22,
 #     "dateTime": "2020-03-23T00:52:57.018Z",
 #     "amount": 100,
@@ -36,13 +43,12 @@ def authorise(token):
 def transfer():
 
     accessToken = request.headers["accessToken"]
-    auth_status = False
-    authorise(accessToken)
+
+    auth_status, custID = authorise(accessToken)
 
     if auth_status:
 
-        data = request.get_json()
-        custID = data["custID"]
+        data = request.form
         payeeID = data["payeeID"]
         amount = data["amount"]
         dateTime = data["dateTime"]
@@ -92,21 +98,16 @@ def transfer():
 # headers: {
 #     accessToken: "XXX"
 # }
-# body: {
-#     "custID": 6
-# }
 @app.route("/balance", methods=['POST'])
 def view_balance():
 
     accessToken = request.headers["accessToken"]
     auth_status = False
-    authorise(accessToken)
+    custID = authorise(accessToken)
 
     if auth_status:
 
         headers = {'x-api-key': API_KEY}
-        data = request.get_json()
-        custID = data["custID"]
         data = {'custID': custID}
         json_data = json.dumps(data)
         response = requests.post("https://u8fpqfk2d4.execute-api.ap-southeast-1.amazonaws.com/techtrek2020/transaction/view", data=json_data, headers=headers)
@@ -128,21 +129,16 @@ def view_balance():
 # headers: {
 #     accessToken: "XXX"
 # }
-# body: {
-#     "custID": 6
-# }
 @app.route("/transaction", methods=['POST'])
 def view_transaction():
 
     accessToken = request.headers["accessToken"]
     auth_status = False
-    authorise(accessToken)
+    custID = authorise(accessToken)
 
     if auth_status:
 
         headers = {'x-api-key': API_KEY}
-        data = request.get_json()
-        custID = data["custID"]
         data = {'custID': custID}
         json_data = json.dumps(data)
         response = requests.post("https://u8fpqfk2d4.execute-api.ap-southeast-1.amazonaws.com/techtrek2020/transaction/view", data=json_data, headers=headers)
@@ -166,8 +162,7 @@ def view_transaction():
 def view_user():
 
     accessToken = request.headers["accessToken"]
-    auth_status = False
-    authorise(accessToken)
+    custID = authorise(accessToken)
 
     if auth_status:
 
@@ -175,8 +170,6 @@ def view_user():
         authorise(refreshToken)
 
         headers = {'x-api-key': API_KEY}
-        data = request.get_json()
-        custID = data["custID"]
         data = {'custID': custID}
         json_data = json.dumps(data)
         response = requests.post("https://u8fpqfk2d4.execute-api.ap-southeast-1.amazonaws.com/techtrek2020/accounts/view", data=json_data, headers=headers)
@@ -196,15 +189,11 @@ def view_user():
 # headers: {
 #     accessToken: "XXX"
 # }
-# body: {
-#     "custID": 6
-# }
 @app.route("/users", methods=['POST'])
 def view_users():
 
     accessToken = request.headers["accessToken"]
-    auth_status = False
-    authorise(accessToken)
+    custID = authorise(accessToken)
 
     if auth_status:
 
@@ -215,6 +204,42 @@ def view_users():
     
         return {"result": {
                     "users": result_json
+                    }
+                }, 201
+    else:
+        return {"result": {
+                    "result": "auth failed"
+                    }
+                }, 401
+
+# headers: {
+#     accessToken: "XXX"
+# }
+# body: {
+#     "payeeID": 6
+# }
+@app.route("/exist", methods=['POST'])
+def verify_user_exist():
+
+    accessToken = request.headers["accessToken"]
+    auth_status = False
+    authorise(accessToken)
+
+    if auth_status:
+
+        data = request.form
+        headers = {'x-api-key': API_KEY}
+        payeeID = data["payeeID"]
+        json_data = json.dumps(data)
+        response = requests.post("https://u8fpqfk2d4.execute-api.ap-southeast-1.amazonaws.com/techtrek2020/users", headers=headers)
+        result_json = json.loads(response.text)
+        inList = False
+        for item in result_json:
+            if item["custID"] == payeeID:
+                inList = True
+    
+        return {"result": {
+                    "inList": inList
                     }
                 }, 201
     else:
