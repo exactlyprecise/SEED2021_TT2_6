@@ -69,7 +69,7 @@ function generateAccessToken(user) {
 }
 
 app.delete('/logout', (req,res) => {
-    refreshTokens = refreshTokens.filter(token => token!= req.header.refreshtoken)
+    refreshTokens = refreshTokens.filter(token => token!= req.headers.refreshtoken)
     // a filtered version where you only have tokens that are not the token in req.body
     res.sendStatus(204)
 })
