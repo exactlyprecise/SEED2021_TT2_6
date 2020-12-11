@@ -5,10 +5,11 @@ from datetime import datetime
 import json
 import jwt
 import os
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, resources={r"/foo": {"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 auth_status = True
 
@@ -42,6 +43,7 @@ def authorise(token):
 #     "message": "Thanks. :)"
 # }
 @app.route("/transfer", methods=['POST'])
+@cross_origin()
 def transfer():
 
     accessToken = request.headers["accessToken"]
@@ -101,6 +103,7 @@ def transfer():
 #     accessToken: "XXX"
 # }
 @app.route("/balance", methods=['POST'])
+@cross_origin()
 def view_balance():
 
     accessToken = request.headers["accessToken"]
@@ -132,6 +135,7 @@ def view_balance():
 #     accessToken: "XXX"
 # }
 @app.route("/transaction", methods=['POST'])
+@cross_origin()
 def view_transaction():
 
     accessToken = request.headers["accessToken"]
@@ -161,6 +165,7 @@ def view_transaction():
 #     accessToken: "XXX"
 # }
 @app.route("/user", methods=['POST'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def view_user():
 
     accessToken = request.headers["accessToken"]
@@ -190,6 +195,7 @@ def view_user():
 #     accessToken: "XXX"
 # }
 @app.route("/users", methods=['POST'])
+@cross_origin()
 def view_users():
 
     accessToken = request.headers["accessToken"]
@@ -220,6 +226,7 @@ def view_users():
 #     "payeeID": 6
 # }
 @app.route("/exist", methods=['POST'])
+@cross_origin()
 def verify_user_exist():
 
     accessToken = request.headers["accessToken"]
@@ -241,6 +248,32 @@ def verify_user_exist():
     
         return {"result": {
                     "inList": inList
+                    }
+                }, 201
+    else:
+        return {"result": {
+                    "result": "auth failed"
+                    }
+                }, 401
+
+@app.route("/viewaccount", methods=['POST'])
+@cross_origin()
+def verify_user_exist():
+
+    accessToken = request.headers["accessToken"]
+    
+    auth_status, custID = authorise(accessToken)
+
+    if auth_status:
+
+        headers = {'x-api-key': API_KEY}
+        data = {'custID': custID}
+        json_data = json.dumps(data)
+        response = requests.post("https://u8fpqfk2d4.execute-api.ap-southeast-1.amazonaws.com/techtrek2020/accounts/view", data=json_data, headers=headers)
+        result_json = json.loads(response.text)
+    
+        return {"result": {
+                    "accounts": result_json
                     }
                 }, 201
     else:
