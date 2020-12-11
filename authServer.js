@@ -34,19 +34,6 @@ app.post('/login', async (req, res) => {
         const refreshToken = jwt.sign(user, REFRESH_TOKEN_SECRET)
         refreshTokens.push(refreshToken)
         //console.log(result)
-
-        // Now for the implementation of jsonwebtokens
-            //const user = {name: username} // Payload to sign/ serialize in our jsonwebtoken
-        // jwt needs to sign payload and secret key
-            //const accessToken = generateAccessToken(user)
-        // Can easily create secret value using crypt library in nodejs
-        // > node > require('crypto').randomBytes(64).toString('hex')
-        // also, no expiration date for this yet.
-            //const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
-
-            //refreshTokens.push(refreshToken)
-
-            //res.json({ accessToken: accessToken, refreshToken: refreshToken })
         
         res.json({details: result, accessToken: accessToken, refreshToken: refreshToken})
     }
@@ -75,15 +62,28 @@ function handleResponse(response) {
 }
 
 function generateAccessToken(user) {
-    return jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: '40m'})
+    return jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: '30m'})
     // can use 15s for testing expiration of tokens.
     // So you send login request to 4000, then get request to 3000 after 15s expires. 
 }
 
 app.delete('/logout', (req,res) => {
-    refreshTokens = refreshTokens.filter(token => token!= req.body.token)
+    refreshTokens = refreshTokens.filter(token => token!= req.header.refreshtoken)
     // a filtered version where you only have tokens that are not the token in req.body
     res.sendStatus(204)
 })
 
-app.listen(4002)
+app.post('/extend', (req, res)=> {
+    const refreshToken = req.headers.refreshtoken
+    if (refreshToken == null) return res.sendStatus(401)
+    if (!refreshTokens.includes(refreshToken)) return res.send
+    // so simply check the list of refreshTokens to see if it is a valid refreshToken
+    jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, (err, user)=> {
+        if (err) return res.sendStatus(403)
+        const accessToken = generateAccessToken({ name:user.name })
+        // RECALL: user is the payload to sign in our jsonwebtoken
+        res.json({accessToken: accessToken})
+    })
+})
+
+app.listen(4005)
