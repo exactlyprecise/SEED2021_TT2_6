@@ -71,7 +71,6 @@ export default class Login extends Component {
         const config = {
             headers: { 'Content-Type': "application/json" }
         };
-    
 
         //API Calling
         //need to insert the link 
@@ -82,28 +81,17 @@ export default class Login extends Component {
                 config
             })
             .then(response => {
-                console.log(response.data);
 
-                // need to see what is the data first then set the custID
-                this.setState({ custID: response.data });
-                //store in session storage instead of local storage
-                sessionStorage.setItem('custID', this.state.custID);
+                localStorage.setItem('token', response.data.accessToken);
                 window.location.href = "/userDetails";
 
             })
             .catch(error => {
                 this.setState({ error });
+                console.log(error);
             });
 
         // const { isLoggedIn } = this.state;
-
-    }
-
-    onChangeCheckbox = (e) => {
-
-        this.setState({ // this method is asynchronous which means that if u put the console log after this method, the boolean method will not be updated immediately
-            isChecked: e.target.checked
-        })
 
     }
 
@@ -111,19 +99,20 @@ export default class Login extends Component {
 
         const { username, password, error, isChecked } = this.state;
         const isInvalid = password === '' || username === '';
+
         return (
             <div className="auth-inner">
-                <form>
+                <form onSubmit={this.onSubmit}>
                     <h3>Sign In</h3>
 
                     <div className="form-group">
                         <label>Username</label>
-                        <input type="text" className="form-control" placeholder="Enter username" />
+                        <input type="text" className="form-control" name="username" value={username} onChange={this.changeHandler} placeholder="Enter username" />
                     </div>
 
                     <div className="form-group">
                         <label>Password</label>
-                        <input type="password" className="form-control" placeholder="Enter password" />
+                        <input type="password" className="form-control" name="password" value={password} onChange={this.changeHandler} placeholder="Enter password" />
                     </div>
 
                     <div className="form-group">

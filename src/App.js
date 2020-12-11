@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./components/login.component";
 import UserDetails from "./components/userDetails.component";
 import AccountDetails from "./components/accountDetails.component";
+import AddTransaction from "./components/addTransaction.component";
 import { NavDropdown } from 'react-bootstrap';
 
 export default class App extends Component {
@@ -67,6 +68,7 @@ export default class App extends Component {
               <Route path="/login" component={Login} />
               <Route path="/userDetails" component={UserDetails} />
               <Route path="/accountDetails" component={AccountDetails} />
+              <Route path="/addTransaction" component={AddTransaction} />
             </Switch>
           </div>
 

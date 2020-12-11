@@ -2,10 +2,12 @@
 
 const express = require("express")
 const app =  express()
+const cors = require("cors")
 const jwt = require('jsonwebtoken')
 const fetch = require('node-fetch')
 require('dotenv').config() // for env vairables
 app.use(express.json())
+app.use(cors());
 
 API_KEY = "nIQY2CKXiN61xvsVkVx6P4uf4qRlPXO34XeLt1aE"
 
